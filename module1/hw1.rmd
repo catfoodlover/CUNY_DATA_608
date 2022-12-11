@@ -1,5 +1,5 @@
 ---
-title: "R Notebook"
+title: "DATA 608 HW 1"
 output:
   html_document: default
   html_notebook: default
@@ -10,7 +10,8 @@ output:
 I have provided you with data about the 5,000 fastest growing companies in the US, as compiled by Inc. magazine. lets read this in:
 
 ```{r}
-
+library(dplyr)
+library(ggplot2)
 inc <- read.csv("https://raw.githubusercontent.com/charleyferrari/CUNY_DATA_608/master/module1/Data/inc5000_data.csv", header= TRUE)
 
 ```
@@ -30,19 +31,37 @@ summary(inc)
 
 Think a bit on what these summaries mean. Use the space below to add some more relevant non-visual exploratory information you think helps you understand this data:
 
+I like the dplyr function 'glimpse'.  It allows me to see the df dimensions, class of variables and more rows than head by default.
+
 ```{r}
-
-# Insert your code here, create more chunks as necessary
-
+glimpse(inc)
 ```
 
+I also would like to get some counts on the categorical columns
+
+It looks like California has the largest number of companies on the list.
+
+```{r}
+count(inc, State)
+```
+
+It looks like IT Services is the most common industry on the list.
+
+```{r}
+count(inc, Industry)
+```
 ## Question 1
 
 Create a graph that shows the distribution of companies in the dataset by State (ie how many are in each state). There are a lot of States, so consider which axis you should use. This visualization is ultimately going to be consumed on a 'portrait' oriented screen (ie taller than wide), which should further guide your layout choices.
 
-```{r}
+I put the states on the y axis due to the number of states and 'portrait' orientation.  Due to the number of bars I thought about removing the background lines but decided that they make it easier to evaluate the unordered bars..  I thought about ordering the states by count but decided that leaving them in alphabetical order will make it easier to find an individual state.
 
-# Answer Question 1 here
+```{r}
+temp <- count(inc, State) %>% as.data.frame()
+```
+
+```{R}
+ggplot2::ggplot(data = temp, aes(y=State, x=n)) + geom_bar(stat='identity')
 
 ```
 
@@ -50,9 +69,12 @@ Create a graph that shows the distribution of companies in the dataset by State 
 
 Lets dig in on the state with the 3rd most companies in the data set. Imagine you work for the state and are interested in how many people are employed by companies in different industries. Create a plot that shows the average and/or median employment by industry for companies in this state (only use cases with full data, use R's `complete.cases()` function.) In addition to this, your graph should show how variable the ranges are, and you should deal with outliers.
 
-```{r}
+I ended up log transforming the number of employees otherwise the plot would be unreadable.
 
-# Answer Question 2 here
+```{r}
+temp2 <- inc %>% filter(State=='NY'& complete.cases(.) == TRUE)
+
+ggplot2::ggplot(temp2, aes(y=Industry, x=log(Employees))) + geom_boxplot() + xlab("Log Transformed Number of Employees")
 
 ```
 
@@ -60,9 +82,12 @@ Lets dig in on the state with the 3rd most companies in the data set. Imagine yo
 
 Now imagine you work for an investor and want to see which industries generate the most revenue per employee. Create a chart that makes this information clear. Once again, the distribution per industry should be shown.
 
-```{r}
+I'm assuming question 3 is for all states, not just NY.  I calculated the revenue per employee and then log transformed that value to deal with outliers.
 
-# Answer Question 3 here
+```{r}
+temp3 <- inc %>% mutate(per_employee = Revenue/Employees)
+
+ggplot2::ggplot(temp3, aes(y=Industry, x=log(per_employee))) + geom_boxplot() + xlab("Log Transformed Revenue per Employee")
 
 ```
 

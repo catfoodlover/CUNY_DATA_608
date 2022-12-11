@@ -1,6 +1,8 @@
 <html>
 
 <!--
+
+    *I'm leaving this in because this is really helpful...
     
     Note to Students:
 
@@ -33,7 +35,7 @@
         - Congrats: you now have a local HTTP server running. Now, every time you change this file and save it, when you reload the browser you will see your changes!
 -->
 
-<head><title>Intro to JS in a Browser</title></head>
+<head><title>DATA 608 Modlue 5/title></head>
 
 <body>
 
@@ -53,7 +55,7 @@ document.write('<p>Chrome and Firefox in particular offer good Developer Tools a
 <script type="text/javascript">
 
 // Find this bug in the console and fix it!
-
+document.write('<p>This assignment is crazy!</p><br>');
 document.write('<p>These are really helpful for finding bugs!</p><br>');
 </script>
 
@@ -81,7 +83,7 @@ document.write('<p>Right now it is ' + rightNow + '<p>');
 
 <script type="text/javascript">
 
-document.write('<br><p>Is a number even or odd, is it divisible by 3?</p>')
+document.write('<br><p>Lets reverse a string!  I took this function from freecodeacademy.org (Im not this clever)</p>')
 
 // Basic functions
 
@@ -101,19 +103,78 @@ function divis(num,d){
     return(str);
 };
 
+
+function mtable(tab_num){
+
+    var div = document.getElementById("internal");
+    var table = document.createElement("table");
+    div.appendChild(table);
+    var rowLength = 5;
+    var colLength = 10;
+
+    for (var i = 0; i < rowLength; i++) {
+
+      var rows = document.createElement("tr");
+      table.appendChild(rows);
+
+        for (var j = 0; j < colLength; j++) {
+
+         var columns = document.createElement("td");
+         var text = document.createTextNode(i + j * rowLength);
+         columns.appendChild(text);
+         rows.appendChild(columns);
+        }
+    }
+
+    return(columns, rows);
+};
+
+
+//function calc(){
+//    var t = document.getElementById("target");
+//    t.innerHTML = divis(document.getElementById('num').value, 3);
+//}
+
+
+function reverseString(str) {
+    return str.split("").reverse().join("");
+}
+
 function calc(){
     var t = document.getElementById("target");
-    t.innerHTML = divis(document.getElementById('num').value, 3);
+    t.innerHTML = reverseString(document.getElementById('str').value);
 }
+
+function calc2(){
+    var t2 = document.getElementById("target2");
+    t2.innerHTML = mtable(document.getElementById('tab_num').value);
+}
+
+
+
 </script>
 <p>
 <form>
-    <input id="num" type="number" size="4">
-    <input type="button" value="check" onClick="calc();">
+    <input id="str" type="string" size="4">
+    <input type="button" value="reverse" onClick="calc();">
 </form>
 </p>
 
 <div id="target"></div>
+
+<script type="text/javascript" src="other_script.js"></script>
+
+<script type="text/javascript"> document.write(myScript());</script>
+
+</script>
+<p>
+<form>
+    <input id="tab_num" type="num" size="4">
+    <input type="button" value="multiples" onClick="calc2();">
+</form>
+</p>
+
+<div id="target2"></div>
 
 <script type="text/javascript" src="other_script.js"></script>
 
